@@ -38,6 +38,56 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args){
+  int steps=1;
+  if(args!=NULL){
+    sscanf(args,"%d",&steps);
+  }
+  cpu_exec(steps);
+  return 0;
+}
+
+static int cmd_info(char *args){
+  if(args==NULL){
+    printf("Missing argument for info!\n");
+    return 0;
+  }
+  if(strcmp(args,"r")==0){
+    printf("eax\t0x%08x\t%d\n",cpu.eax,cpu.eax);
+    printf("ecx\t0x%08x\t%d\n",cpu.ecx,cpu.ecx);
+    printf("edx\t0x%08x\t%d\n",cpu.edx,cpu.edx);
+    printf("ebx\t0x%08x\t%d\n",cpu.ebx,cpu.ebx);
+    printf("esp\t0x%08x\t%d\n",cpu.esp,cpu.esp);
+    printf("ebp\t0x%08x\t%d\n",cpu.ebp,cpu.ebp);
+    printf("esi\t0x%08x\t%d\n",cpu.esi,cpu.esi);
+    printf("edi\t0x%08x\t%d\n",cpu.edi,cpu.edi);
+    printf("eip\t0x%08x\t%d\n",cpu.eip,cpu.eip);
+  }
+  else{
+    printf("Unknown argument '%s' for info!\n",args);
+  }
+  return 0;
+}
+
+static int cmd_x(char *args){
+  if(args==NULL){
+    printf("Missing arguments for x!\n");
+    return 0;
+  }
+  char *arg1=strtok(args," ");
+  if(arg1==NULL) return 0;
+  int n=atoi(arg1);
+  char *arg2=strtok(NULL," ");
+  if(arg2==NULL) return 0;
+  vaddr_t addr;
+  sscanf(arg2,"%x",&addr);
+  for(int i=0;i<n;i++){
+    uint32_t data=vaddr_read(addr+i*4,4);
+    printf("0x%08x:\t0x%08x\n",addr+i*4,data);
+  }
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -46,6 +96,10 @@ static struct {
   { "help", "Display informations about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+  { "si", "Make the program execute one instruction at a time and then pause.If N is not specified,it defaults to 1", cmd_si },
+  { "info", "Print register status;Print monitoring point information", cmd_info },
+  { "x", "Calculate the value of the expression EXPR,use the result as the starting memory address,and output N consecutive 4-bite values in hexadecimal format", cmd_x}
+
 
   /* TODO: Add more commands */
 
