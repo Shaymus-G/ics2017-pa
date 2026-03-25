@@ -88,6 +88,22 @@ static int cmd_x(char *args){
   return 0;
 }
 
+static int cmd_p(char *args){
+  if(args==NULL){
+    printf("Missing expression!\n");
+    return 0;
+  }
+  bool success=true;
+  uint32_t res=expr(args,&success);
+  if(success){
+    printf("%u\n",res);
+  }
+  else{
+    printf("Bad expression!\n");
+  }
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -98,7 +114,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "Make the program execute one instruction at a time and then pause.If N is not specified,it defaults to 1", cmd_si },
   { "info", "Print register status;Print monitoring point information", cmd_info },
-  { "x", "Calculate the value of the expression EXPR,use the result as the starting memory address,and output N consecutive 4-bite values in hexadecimal format", cmd_x}
+  { "x", "Calculate the value of the expression EXPR,use the result as the starting memory address,and output N consecutive 4-bite values in hexadecimal format", cmd_x},
+  { "p", "Calculate the value of the expression EXPR", cmd_p}
 
 
   /* TODO: Add more commands */
