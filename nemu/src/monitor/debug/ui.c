@@ -77,10 +77,11 @@ static int cmd_x(char *args){
   char *arg1=strtok(args," ");
   if(arg1==NULL) return 0;
   int n=atoi(arg1);
-  char *arg2=strtok(NULL," ");
+  char *arg2=arg1+strlen(arg1)+1;
   if(arg2==NULL) return 0;
-  vaddr_t addr;
-  sscanf(arg2,"%x",&addr);
+  bool success=false;
+  vaddr_t addr=expr(arg2,&success);
+  if(!success) return 0;
   for(int i=0;i<n;i++){
     uint32_t data=vaddr_read(addr+i*4,4);
     printf("0x%08x:\t0x%08x\n",addr+i*4,data);

@@ -218,9 +218,14 @@ uint32_t eval(int p,int q){
       printf("Invalid expression!\n");
       assert(0);
     }
-    uint32_t val1=eval(p,op-1);
+    uint32_t val1=0;
+    if(tokens[op].type!=TK_DEREF&&tokens[op].type!=TK_NEG){
+      val1=eval(p,op-1);
+    }
     uint32_t val2=eval(op+1,q);
     switch(tokens[op].type){
+      case TK_NEG: return -val2;
+      case TK_DEREF: return vaddr_read(val2,4);
       case '+': return val1+val2;
       case '-': return val1-val2;
       case '*': return val1*val2;
@@ -243,6 +248,22 @@ uint32_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
+  }
+
+  for(int i=0;i<nr_token;i++){
+    if(tokens[i].type=='*'||tokens[i].type=='-'){
+      if(i==0||(tokens[i-1].type!=TK_NUM&&
+		tokens[i-1].type!=TK_HEX&&
+		tokens[i-1].type!=TK_REG&&
+		tokens[i-1].type!=')')){
+        if(tokens[i].type=='*'){
+	  tokens[i].type=TK_DEREF;
+	}
+	else{
+	  tokens[i].type=TK_NEG;
+	}
+      }
+    }
   }
 
   /* TODO: Insert codes to evaluate the expression. */
