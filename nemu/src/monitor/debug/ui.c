@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+void print_wp();
 
 void cpu_exec(uint64_t);
 
@@ -63,6 +64,9 @@ static int cmd_info(char *args){
     printf("edi\t0x%08x\t%d\n",cpu.edi,cpu.edi);
     printf("eip\t0x%08x\t%d\n",cpu.eip,cpu.eip);
   }
+  else if(strcmp(args,"w")==0){
+    print_wp();
+  }
   else{
     printf("Unknown argument '%s' for info!\n",args);
   }
@@ -105,6 +109,31 @@ static int cmd_p(char *args){
   return 0;
 }
 
+static int cmd_w(char *args){
+  if(args==NULL){
+    printf("Usage: w EXPR\n");
+    return 0;
+  }
+  bool success=false;
+  uint32_t val=expr(args,&success);
+  if(!success){
+    printf("Bad expression!\n");
+    return 0;
+  }
+  WP *wp=new_wp();
+  strcpy(wp->expr,args);
+  wp->old_val=val;
+  printf("Watchpoint %d: %s\n",wp->NO,wp->expr);
+  return 0;
+}
+
+static int cmd_d(char *args){
+  if(args==NULL) return 0;
+  int no=atoi(args);
+  delete_wp(no);
+  return 0;
+}
+
 static struct {
   char *name;
   char *description;
@@ -116,7 +145,9 @@ static struct {
   { "si", "Make the program execute one instruction at a time and then pause.If N is not specified,it defaults to 1", cmd_si },
   { "info", "Print register status;Print monitoring point information", cmd_info },
   { "x", "Calculate the value of the expression EXPR,use the result as the starting memory address,and output N consecutive 4-bite values in hexadecimal format", cmd_x},
-  { "p", "Calculate the value of the expression EXPR", cmd_p}
+  { "p", "Calculate the value of the expression EXPR", cmd_p},
+  { "w", "When the value of the expression EXPR changes,pause the program execution", cmd_w},
+  { "d", "Delete the monitoring point with the number N", cmd_d}
 
 
   /* TODO: Add more commands */
