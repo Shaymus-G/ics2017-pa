@@ -41,7 +41,7 @@ static struct rule {
   {"\\(", '('},		// left bracket
   {"\\)", ')'},		// right bracket
 
-  {"[xX][0-9a-fA-F]+", TK_HEX}, //hexadecimal
+  {"0[xX][0-9a-fA-F]+", TK_HEX}, //hexadecimal
   {"[0-9]+", TK_NUM},		//decimal integer
   {"\\$[a-zA-Z]+", TK_REG}	//register
 };
