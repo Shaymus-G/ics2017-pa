@@ -12,6 +12,7 @@ make_EHelper(cmp);
 
 make_EHelper(and);
 make_EHelper(xor);
+make_EHelper(test);
 make_EHelper(setcc);
 
 make_EHelper(jmp);
