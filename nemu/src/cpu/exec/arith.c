@@ -7,7 +7,20 @@ make_EHelper(add) {
 }
 
 make_EHelper(sub) {
-  TODO();
+  rtl_sub(&t2, &id_dest->val, &id_src->val);
+
+  rtl_update_ZFSF(&t2, id_dest->width);
+
+  cpu.CF = id_dest->val < id_src->val;
+
+  rtlreg_t sign_dest, sign_src, sign_res;
+  rtl_msb(&sign_dest, &id_dest->val, id_dest->width);
+  rtl_msb(&sign_src, &id_src->val, id_dest->width);
+  rtl_msb(&sign_res, &t2, id_dest->width);
+
+  cpu.OF = (sign_dest != sign_src) && (sign_res != sign_dest);
+
+  operand_write(id_dest, &t2);
 
   print_asm_template2(sub);
 }
