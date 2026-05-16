@@ -1,7 +1,39 @@
 #include "cpu/exec.h"
 
 make_EHelper(add) {
-  TODO();
+  rtl_add(&t2, &id_dest->val, &id_src->val);
+
+  rtl_update_ZFSF(&t2, id_dest->width);
+
+  uint64_t mask;
+  switch (id_dest->width) {
+    case 1: 
+      mask = 0xff;
+      break;
+    case 2:
+      mask = 0xffff;
+      break;
+    case 4:
+      mask = 0xffffffffu;
+      break;
+    default:
+      assert(0);
+  }
+
+  uint64_t dest = id_dest->val & mask;
+  uint64_t src = id_src->val & mask;
+  uint64_t res = dest + src;
+
+  cpu.CF = res > mask;
+
+  rtlreg_t sign_dest, sign_src, sign_res;
+  rtl_msb(&sign_dest, &id_dest->val, id_dest->width);
+  rtl_msb(&sign_src, &id_src->val, id_dest->width);
+  rtl_msb(&sign_res, &t2, id_dest->width);
+
+  cpu.OF = (sign_dest == sign_src) && (sign_res != sign_dest);
+
+  operand_write(id_dest, &t2);
 
   print_asm_template2(add);
 }
