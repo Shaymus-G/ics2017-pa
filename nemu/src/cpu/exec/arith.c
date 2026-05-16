@@ -58,7 +58,36 @@ make_EHelper(sub) {
 }
 
 make_EHelper(cmp) {
-  TODO();
+  rtl_sub(&t2, &id_dest->val, &id_src->val);
+
+  rtl_update_ZFSF(&t2, id_dest->width);
+
+  uint64_t mask;
+  switch (id_dest->width) {
+    case 1:
+      mask = 0xff;
+      break;
+    case 2:
+      mask = 0xffff;
+      break;
+    case 4:
+      mask = 0xffffffffu;
+      break;
+    default:
+      assert(0);
+  }
+
+  uint64_t dest = id_dest->val & mask;
+  uint64_t src = id_src->val & mask;
+
+  cpu.CF = dest < src;
+
+  rtlreg_t sign_dest, sign_src, sign_res;
+  rtl_msb(&sign_dest, &id_dest->val, id_dest->width);
+  rtl_msb(&sign_src, &id_src->val, id_dest->width);
+  rtl_msb(&sign_res, &t2, id_dest->width);
+
+  cpu.OF = (sign_dest != sign_src) && (sign_res != sign_dest);
 
   print_asm_template2(cmp);
 }
