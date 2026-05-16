@@ -149,9 +149,30 @@ void difftest_step(uint32_t eip) {
 
   // TODO: Check the registers state with QEMU.
   // Set `diff` as `true` if they are not the same.
-  TODO();
+#define CHECK_REG(name) \
+  do { \
+    if (cpu.name != r.name) { \
+      printf("\33[1;31mDIFFTEST ERROR\33[0m at eip = 0x%08x: " \
+	     #name "differs, NEMU = 0x%08x, QEMU = 0x%08x\n", \
+	     eip, cpu.name, r.name); \
+      diff = true; \
+    } \
+  } while (0)
+
+  CHECK_REG(eax);
+  CHECK_REG(ecx);
+  CHECK_REG(edx);
+  CHECK_REG(ebx);
+  CHECK_REG(esp);
+  CHECK_REG(ebp);
+  CHECK_REG(esi);
+  CHECK_REG(edi);
+  CHECK_REG(eip);
+
+#undef CHECK_REG
 
   if (diff) {
+    printf("\33[1;31mDifferential testing failed at instruction eip = 0x%08x\33[0m\n", eip);
     nemu_state = NEMU_END;
   }
 }
