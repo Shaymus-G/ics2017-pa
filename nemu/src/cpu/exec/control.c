@@ -43,8 +43,3 @@ make_EHelper(call_rm) {
   print_asm("call *%s", id_dest->str);
 }
 
-make_EHelper(push) {
-  rtl_push(&id_dest->val);
-
-  print_asm("push %s", id_dest->str);
-}
