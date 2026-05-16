@@ -9,6 +9,7 @@ make_EHelper(call);
 make_EHelper(ret);
 make_EHelper(call_rm);
 
+make_EHelper(push);
 
 make_EHelper(operand_size);
 
