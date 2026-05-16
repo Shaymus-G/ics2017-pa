@@ -39,6 +39,9 @@ make_EHelper(call);
 make_EHelper(ret);
 make_EHelper(call_rm);
 
+make_EHelper(in);
+make_EHelper(out);
+
 make_EHelper(nop);
 make_EHelper(operand_size);
 
