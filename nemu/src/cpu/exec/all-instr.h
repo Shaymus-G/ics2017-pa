@@ -17,6 +17,8 @@ make_EHelper(call);
 make_EHelper(ret);
 make_EHelper(call_rm);
 
+make_EHelper(nop);
+
 make_EHelper(operand_size);
 
 make_EHelper(inv);
