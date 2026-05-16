@@ -93,7 +93,17 @@ make_EHelper(cmp) {
 }
 
 make_EHelper(inc) {
-  TODO();
+  rtl_addi(&t2, &id_dest->val, 1);
+
+  rtl_update_ZFSF(&t2, id_dest->width);
+
+  rtlreg_t sign_dest, sign_res;
+  rtl_msb(&sign_dest, &id_dest->val, id_dest->width);
+  rtl_msb(&sign_res, &t2, id_dest->width);
+
+  cpu.OF = (!sign_dest) && sign_res;
+
+  operand_write(id_dest, &t2);
 
   print_asm_template1(inc);
 }
