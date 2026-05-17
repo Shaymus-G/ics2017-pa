@@ -111,6 +111,9 @@ void fce_run()
         if (key != _KEY_NONE) {
           int down = (key & 0x8000) != 0;
           int code = key & ~0x8000;
+
+          printf("[LiteNES key] code=%d %s\n", code, down ? "down" : "up");
+
           key_state[code] = down;
         }
     }
