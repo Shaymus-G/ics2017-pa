@@ -113,3 +113,37 @@ make_EHelper(not) {
 
   print_asm_template1(not);
 }
+
+make_EHelper(rol) {
+  rtl_andi(&t1, &id_src->val, 0x1f);
+
+  uint32_t width_bits = id_dest->width * 8;
+  uint32_t count = t1 % width_bits;
+
+  if (count == 0) {
+    t2 = id_dest->val;
+  }
+  else {
+    uint32_t mask;
+    switch (id_dest->width) {
+      case 1:
+        mask = 0xff;
+	break;
+      case 2:
+	mask = 0xffff;
+	break;
+      case 4:
+	mask = 0xffffffffu;
+	break;
+      default:
+	assert(0);
+    }
+
+    uint32_t val = id_dest->val & mask;
+    t2 = ((val << count) | (val >> (width_bits - count))) & mask;
+  }
+
+  operand_write(id_dest, &t2);
+
+  print_asm_template2(rol);
+}
