@@ -5,20 +5,19 @@
 
 extern int fs_open(const char *pathname, int flags, int mode);
 extern size_t fs_read(int fd, void *buf, size_t len);
-extern size_t fs_lseek(int fd, size_t offset, int whence);
+//extern size_t fs_lseek(int fd, size_t offset, int whence);
+extern size_t fs_filesz(int fd);
 extern int fs_close(int fd);
 
 uintptr_t loader(_Protect *as, const char *filename) {
   (void)as;
 
   if (filename == NULL) {
-    filename = "/bin/hello";
+    filename = "/bin/init";
   }
 
   int fd = fs_open(filename, 0, 0);
-
-  size_t size = fs_lseek(fd, 0, SEEK_END);
-  fs_lseek(fd, 0, SEEK_SET);
+  size_t size = fs_filesz(fd);
 
   fs_read(fd, DEFAULT_ENTRY, size);
   fs_close(fd);

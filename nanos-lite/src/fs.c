@@ -11,9 +11,9 @@ enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_TTY, FD_FB, FD_EVENTS, FD_DISPINFO, FD_
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
-  {"stdin (note that this is not the actual stdin)", 0, 0},
-  {"stdout (note that this is not the actual stdout)", 0, 0},
-  {"stderr (note that this is not the actual stderr)", 0, 0},
+  {"stdin (note that this is not the actual stdin)", 0, 0, 0},
+  {"stdout (note that this is not the actual stdout)", 0, 0, 0},
+  {"stderr (note that this is not the actual stderr)", 0, 0, 0},
   [FD_TTY] = {"/dev/tty", 0, 0, 0},
   [FD_FB] = {"/dev/fb", 0, 0, 0},
   [FD_EVENTS] = {"/dev/events", 0, 0, 0},
@@ -23,8 +23,8 @@ static Finfo file_table[] __attribute__((used)) = {
 
 #define NR_FILES (sizeof(file_table) / sizeof(file_table[0]))
 
-extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
-extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+extern void ramdisk_read(void *buf, off_t offset, size_t len);
+extern void ramdisk_write(const void *buf, off_t offset, size_t len);
 
 static void serial_write(const void *buf, size_t len) {
   const char*p = (const char *)buf;
@@ -70,9 +70,9 @@ size_t fs_read(int fd, void *buf, size_t len) {
     len = f->size - f->open_offset;
   }
 
-  size_t ret = ramdisk_read(buf, f->disk_offset + f->open_offset, len);
-  f->open_offset += ret;
-  return ret;
+  ramdisk_read(buf, f->disk_offset + f->open_offset, len);
+  f->open_offset += len;
+  return len;
 }
 
 size_t fs_write(int fd, const void *buf, size_t len) {
@@ -93,9 +93,9 @@ size_t fs_write(int fd, const void *buf, size_t len) {
     len = f->size - f->open_offset;
   }
 
-  size_t ret = ramdisk_write(buf, f->disk_offset + f->open_offset, len);
-  f->open_offset += ret;
-  return ret;
+  ramdisk_write(buf, f->disk_offset + f->open_offset, len);
+  f->open_offset += len;
+  return len;
 }
 
 size_t fs_lseek(int fd, size_t offset, int whence) {
@@ -130,4 +130,9 @@ size_t fs_lseek(int fd, size_t offset, int whence) {
 int fs_close(int fd) {
   assert(fd >= 0 && fd  < NR_FILES);
   return 0;
+}
+
+size_t fs_filesz(int fd) {
+  assert(fd >= 0 && fd < NR_FILES);
+  return file_table[fd].size;
 }
