@@ -2,6 +2,8 @@
 
 #include <reent.h>
 
+int _kill(int pid, int sig);
+
 int
 kill (pid, sig)
      int pid;

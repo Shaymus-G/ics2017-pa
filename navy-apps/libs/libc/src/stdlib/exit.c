@@ -48,6 +48,9 @@ Supporting OS subroutines required: <<_exit>>.
 #include <stdlib.h>
 #include <reent.h>
 
+/* Local declarations for low-level syscall stubs. */
+void _exit(int status);
+
 #ifndef _REENT_ONLY
 
 /*

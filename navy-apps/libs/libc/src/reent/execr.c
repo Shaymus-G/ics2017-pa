@@ -26,6 +26,10 @@ int _dummy_exec_syscalls = 1;
 #undef errno
 int errno;
 
+/* Local declarations for low-level syscall stubs. */
+int _fork(void);
+int _wait(int *status);
+
 /*
 FUNCTION
 	<<_fork_r>>---Reentrant version of fork

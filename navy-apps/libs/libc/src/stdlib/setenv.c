@@ -79,7 +79,7 @@ _DEFUN (setenv, (name, value, rewrite),
 	  P = (char **) malloc ((size_t) (sizeof (char *) * (cnt + 2)));
 	  if (!P)
 	    return (-1);
-	  bcopy ((char *) environ, (char *) P, cnt * sizeof (char *));
+	  memcpy (P, environ, cnt * sizeof (char *));
 	  environ = P;
 	}
       environ[cnt + 1] = NULL;

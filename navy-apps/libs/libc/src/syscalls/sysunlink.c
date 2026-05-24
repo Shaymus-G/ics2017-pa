@@ -2,6 +2,8 @@
 
 #include <reent.h>
 
+int _unlink(char *file);
+
 int
 unlink (file)
      char *file;

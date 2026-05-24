@@ -37,12 +37,15 @@ Supporting OS subroutines required: <<close>>, <<fstat>>, <<isatty>>,
 
 #include <_ansi.h>
 #include <stdio.h>
+#include <reent.h>
 
 #ifndef _REENT_ONLY
 
 #ifdef _HAVE_STDC
 
 #include <stdarg.h>
+
+int vfiprintf(FILE *fp, _CONST char *fmt, va_list ap);
 
 int
 iprintf (const char *fmt,...)
@@ -60,6 +63,8 @@ iprintf (const char *fmt,...)
 #else
 
 #include <varargs.h>
+
+int vfiprintf(FILE *fp, _CONST char *fmt, va_list ap);
 
 int
 iprintf (fmt, va_alist)

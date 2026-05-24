@@ -102,7 +102,7 @@ Supporting OS subroutines required: <<getpid>>, <<open>>, <<stat>>.
 #include <ctype.h>
 #include <reent.h>
 
-static
+static int
 _DEFUN (_gettemp, (ptr, path, doopen),
 	struct _reent *ptr _AND
 	char *path _AND
@@ -178,6 +178,7 @@ _DEFUN (_gettemp, (ptr, path, doopen),
   /*NOTREACHED*/
 }
 
+int
 _DEFUN (_mkstemp_r, (ptr, path),
 	struct _reent *ptr _AND
 	char *path)
@@ -197,6 +198,7 @@ _DEFUN (_mktemp_r, (ptr, path),
 
 #ifndef _REENT_ONLY
 
+int
 _DEFUN (mkstemp, (path),
 	char *path)
 {

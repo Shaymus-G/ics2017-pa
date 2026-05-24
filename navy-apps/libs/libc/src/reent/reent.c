@@ -12,6 +12,10 @@ DESCRIPTION
 
 #include <reent.h>
 
+/* Local declarations for low-level syscall stubs. */
+void _free_r(struct _reent *ptr, void *addr);
+void _cleanup_r(struct _reent *ptr);
+
 static struct _reent inpure_data = _REENT_INIT (inpure_data);
 struct _reent *_impure_ptr = &inpure_data;
 

@@ -56,12 +56,20 @@
 
 /* Functions that are not documented, and are not in <math.h>.  */
 
+extern int isnan __P((double));
+extern int finite __P((double));
 extern double logb __P((double));
+extern int ilogb __P((double));
+extern double log1p __P((double));
+extern double expm1 __P((double));
+extern double rint __P((double));
+extern double copysign __P((double, double));
 #ifdef _SCALB_INT
 extern double scalb __P((double, int));
 #else
 extern double scalb __P((double, double));
 #endif
+extern double scalbn __P((double, int));
 extern double significand __P((double));
 
 /* ieee style elementary functions */
@@ -103,12 +111,25 @@ extern double __kernel_tan __P((double,double,int));
 extern int    __kernel_rem_pio2 __P((double*,double*,int,int,int,const __int32_t*));
 
 /* Undocumented float functions.  */
+extern int isnanf __P((float));
+extern int finitef __P((float));
 extern float logbf __P((float));
+extern float log1pf __P((float));
+extern float expm1f __P((float));
+extern int ilogbf __P((float));
 #ifdef _SCALB_INT
 extern float scalbf __P((float, int));
 #else
 extern float scalbf __P((float, float));
 #endif
+extern float scalbnf __P((float, int));
+extern float copysignf __P((float, float));
+extern float floorf __P((float));
+extern float fabsf __P((float));
+extern float atanf __P((float));
+extern float sinf __P((float));
+extern float cosf __P((float));
+extern float rintf __P((float));
 extern float significandf __P((float));
 
 /* ieee style elementary float functions */
@@ -280,3 +301,32 @@ do {								\
   sf_u.word = (i);						\
   (d) = sf_u.value;						\
 } while (0)
+
+/* Comatibility helpers for old fdlibm code under modern Gcc. */
+//#ifndef isnan
+//#define isnan(x) ((x) != (x))
+//#endif
+
+//#ifndef isnanf
+//#define isnanf(x) ((x) != (x))
+//#endif
+
+//#ifndef fabsf
+//#define fabsf(x) ((float)(((x) < 0.0f) ? -(x) : (x)))
+//#endif
+
+//#ifndef finite
+//#define finite(x) __extension__ ({        \
+  __int32_t __hx;                         \
+  GET_HIGH_WORD(__hx, (double)(x));       \
+  ((__hx & 0x7fffffff) < 0x7ff00000);     \
+})
+//#endif
+
+//#ifndef finitef
+//#define finitef(x) __extension__ ({       \
+  __int32_t __hx;                         \
+  GET_FLOAT_WORD(__hx, (float)(x));       \
+  ((__hx & 0x7fffffff) < 0x7f800000);     \
+})
+//#endif

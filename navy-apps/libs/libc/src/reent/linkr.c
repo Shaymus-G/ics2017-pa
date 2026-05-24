@@ -24,6 +24,10 @@ int _dummy_link_syscalls = 1;
 #undef errno
 int errno;
 
+/* Local declarations for low-level syscall stubs. */
+int _link(_CONST char *old, _CONST char *new);
+int _unlink(_CONST char *file);
+
 /*
 FUNCTION
 	<<_link_r>>---Reentrant version of link

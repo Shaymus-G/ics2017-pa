@@ -3,6 +3,7 @@
 
 #include <reent.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <_syslist.h>
 
 /* Some targets provides their own versions of these functions.  Those
@@ -23,6 +24,9 @@ int _dummy_fstat_syscalls = 1;
 /* We use the errno variable used by the system dependent layer.  */
 #undef errno
 int errno;
+
+/* Local declarations for low-level syscall stubs. */
+int _fstat(int fd, struct stat *pstat);
 
 /*
 FUNCTION

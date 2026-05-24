@@ -25,6 +25,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Local declarations for low-level syscall stubs. */
+char *strdup(const char *s);
+int setenv(const char *name, const char *value, int rewrite);
+
 int
 _DEFUN (putenv, (str),
 	_CONST char *str)
@@ -34,7 +38,7 @@ _DEFUN (putenv, (str),
 
   if (!(p = strdup (str)))
     return 1;
-  if (!(equal = index (p, '=')))
+  if (!(equal = strchr (p, '=')))
     {
       (void) free (p);
       return 1;

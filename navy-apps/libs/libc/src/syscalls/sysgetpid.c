@@ -1,6 +1,9 @@
 /* connector for getpid */
 
 #include <reent.h>
+#include <sys/types.h>
+
+int _getpid(void);
 
 int
 getpid ()

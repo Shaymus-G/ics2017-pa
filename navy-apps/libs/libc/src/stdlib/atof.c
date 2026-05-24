@@ -64,6 +64,9 @@ Supporting OS subroutines required: <<close>>, <<fstat>>, <<isatty>>,
 #include <stdlib.h>
 #include <_ansi.h>
 
+/* Local declarations for low-level syscall stubs. */
+float strtodf(const char *s, char **endptr);
+
 double
 _DEFUN (atof, (s),
 	_CONST char *s)

@@ -3,6 +3,8 @@
 
 #include <reent.h>
 
+int _fcntl(int fd, int flag, int arg);
+
 int
 fcntl (fd, flag, arg)
      int fd;

@@ -2,6 +2,8 @@
 
 #include <reent.h>
 
+int _link(char *old, char *new);
+
 int
 link (old, new)
      char *old;

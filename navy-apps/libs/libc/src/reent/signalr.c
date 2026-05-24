@@ -23,6 +23,10 @@ int _dummy_link_syscalls = 1;
 #undef errno
 int errno;
 
+/* Local declarations for low-level syscall stubs. */
+int _kill(int pid, int sig);
+int _getpid(void);
+
 /*
 FUNCTION
 	<<_kill_r>>---Reentrant version of kill

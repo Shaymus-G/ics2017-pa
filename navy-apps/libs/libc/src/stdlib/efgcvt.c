@@ -133,6 +133,10 @@ Supporting OS subroutines required: <<close>>, <<fstat>>, <<isatty>>,
 #include <stdlib.h>
 #include "local.h"
 
+/* Local declarations for low-level syscall stubs. */
+char *fcvtbuf(double d, int ndigit, int *decpt, int *sign, char *buf);
+char *ecvtbuf(double d, int ndigit, int *decpt, int *sign, char *buf);
+
 char *
 _DEFUN (gcvt, (d, ndigit, buf),
 	double d _AND

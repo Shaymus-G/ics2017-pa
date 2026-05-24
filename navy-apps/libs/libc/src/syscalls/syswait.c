@@ -2,6 +2,8 @@
 
 #include <reent.h>
 
+int _wait(int *status);
+
 int
 wait (status)
      int *status;

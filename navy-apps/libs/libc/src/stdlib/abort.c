@@ -49,6 +49,9 @@ Supporting OS subroutines required: <<getpid>>, <<kill>>.
 #include <stdlib.h>
 #include <signal.h>
 
+/* Local declarations for low-level syscall stubs. */
+void _exit(int status);
+
 _VOID
 _DEFUN_VOID (abort)
 {

@@ -2,6 +2,8 @@
 
 #include <reent.h>
 
+int _fork(void);
+
 int
 fork ()
 {

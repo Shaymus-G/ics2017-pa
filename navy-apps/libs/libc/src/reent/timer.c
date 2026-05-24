@@ -28,6 +28,10 @@ int _dummy_time_syscalls = 1;
 #undef errno
 int errno;
 
+/* Local declarations for low-level syscall stubs. */
+clock_t _times(struct tms *ptms);
+int _gettimeofday(struct timeval *ptimeval, struct timezone *ptimezone);
+
 /*
 FUNCTION
 	<<_times_r>>---Reentrant version of times

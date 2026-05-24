@@ -54,7 +54,13 @@ Supporting OS subroutines required: <<_exit>>, <<execve>>, <<fork>>,
 
 #include <stddef.h>
 #include <stdlib.h>
+#include <reent.h>
 #include <_syslist.h>
+
+/* Local declarations for low-level syscall stubs. */
+int _fork_r(struct _reent *ptr);
+int _wait_r(struct _reent *ptr, int *status);
+int _execve(const char *path, char * const argv[], char * const envp[]);
 
 #ifndef NO_EXEC
 extern int execve ();

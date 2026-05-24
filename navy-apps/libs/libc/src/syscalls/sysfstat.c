@@ -1,7 +1,9 @@
 /* connector for fstat */
 
 #include <reent.h>
-#include <unistd.h>
+#include <sys/stat.h>
+
+int _fstat(int fd, struct stat *pstat);
 
 int
 fstat (fd, pstat)

@@ -1,7 +1,8 @@
 /* connector for stat */
 
 #include <reent.h>
-#include <unistd.h>
+
+int _stat(char *file, struct stat *pstat);
 
 int
 stat (file, pstat)
