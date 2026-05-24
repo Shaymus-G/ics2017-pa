@@ -30,7 +30,24 @@ int _write(int fd, const void *buf, size_t count){
   return _syscall_(SYS_write, fd, (uintptr_t)buf, count);
 }
 
+extern char end;
+
 void *_sbrk(intptr_t increment){
+  static uintptr_t brk = 0;
+
+  if (brk == 0) {
+    brk = (uintptr_t)&end;
+  }
+
+  uintptr_t old_brk = brk;
+  uintptr_t new_brk = brk + increment;
+
+  int ret = _syscall_(SYS_brk, new_brk, 0, 0);
+  if (ret == 0) {
+    brk = new_brk;
+    return (void *)old_brk;
+  }
+
   return (void *)-1;
 }
 
