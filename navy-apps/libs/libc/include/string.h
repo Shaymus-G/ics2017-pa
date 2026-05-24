@@ -40,6 +40,7 @@ char 	*_EXFUN(strpbrk,(const char *, const char *));
 char 	*_EXFUN(strrchr,(const char *, int));
 size_t	 _EXFUN(strspn,(const char *, const char *));
 char 	*_EXFUN(strstr,(const char *, const char *));
+char    *_EXFUN(strdup,(const char *));
 
 #ifndef _REENT_ONLY
 char 	*_EXFUN(strtok,(char *, const char *));
@@ -59,7 +60,7 @@ char 	*_EXFUN(index,(const char *, int));
 _PTR	 _EXFUN(memccpy,(_PTR, const _PTR, int, size_t));
 char 	*_EXFUN(rindex,(const char *, int));
 int	 _EXFUN(strcasecmp,(const char *, const char *));
-char 	*_EXFUN(strdup,(const char *));
+//char 	*_EXFUN(strdup,(const char *));
 int	 _EXFUN(strncasecmp,(const char *, const char *, size_t));
 char 	*_EXFUN(strsep,(char *, const char *));
 void	 _EXFUN(swab,(const char *, char *, size_t));
