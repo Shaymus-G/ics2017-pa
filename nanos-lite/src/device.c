@@ -29,6 +29,8 @@ size_t events_read(void *buf, size_t len) {
       keycode = key;
     }
 
+    Log("events_read: raw_key=0x%x, type=%s, keycode=%d, keyname=%s", key, type, keycode, (keycode > 0 && keycode <256 && keyname[keycode] != NULL) ? keyname[keycode] : "UNKNOWN");
+
     if (keycode > 0 && keycode < 256 && keyname[keycode] != NULL) {
       int n =snprintf((char *)buf, len, "%s %s\n", type, keyname[keycode]);
       return n < len ? n : len;
