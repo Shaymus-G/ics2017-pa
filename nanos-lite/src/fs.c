@@ -7,13 +7,14 @@ typedef struct {
   off_t open_offset;
 } Finfo;
 
-enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_FB, FD_EVENTS, FD_DISPINFO, FD_NORMAL};
+enum {FD_STDIN, FD_STDOUT, FD_STDERR, FD_TTY, FD_FB, FD_EVENTS, FD_DISPINFO, FD_NORMAL};
 
 /* This is the information about all files in disk. */
 static Finfo file_table[] __attribute__((used)) = {
   {"stdin (note that this is not the actual stdin)", 0, 0},
   {"stdout (note that this is not the actual stdout)", 0, 0},
   {"stderr (note that this is not the actual stderr)", 0, 0},
+  [FD_TTY] = {"/dev/tty", 0, 0, 0},
   [FD_FB] = {"/dev/fb", 0, 0, 0},
   [FD_EVENTS] = {"/dev/events", 0, 0, 0},
   [FD_DISPINFO] = {"/proc/dispinfo", 128, 0, 0},
@@ -51,7 +52,7 @@ int fs_open(const char *pathname, int flags, int mode) {
 size_t fs_read(int fd, void *buf, size_t len) {
   assert(fd >= 0 && fd < NR_FILES);
 
-  if (fd == FD_STDIN) {
+  if (fd == FD_STDIN || fd == FD_TTY) {
     return 0;
   }
 
@@ -77,7 +78,7 @@ size_t fs_read(int fd, void *buf, size_t len) {
 size_t fs_write(int fd, const void *buf, size_t len) {
   assert(fd >= 0 && fd < NR_FILES);
 
-  if (fd == FD_STDOUT || fd == FD_STDERR) {
+  if (fd == FD_STDOUT || fd == FD_STDERR || fd == FD_TTY) {
     serial_write(buf, len);
     return len;
   }
