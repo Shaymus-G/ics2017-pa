@@ -1,8 +1,26 @@
 #include "cpu/exec.h"
+#include "memory/mmu.h"
 
 make_EHelper(mov) {
   operand_write(id_dest, &id_src->val);
   print_asm_template2(mov);
+}
+
+make_EHelper(movs) {
+  int width = decoding.dest.width;
+  uint32_t data = vaddr_read(cpu.esi, width);
+
+  vaddr_write(cpu.edi, width, data);
+
+  if (cpu.DF) {
+    cpu.esi -= width;
+    cpu.edi -= width;
+  } else {
+    cpu.esi += width;
+    cpu.edi += width;
+  }
+
+  print_asm(width == 1 ? "movsb" : (width == 2 ? "movsw" : "movsl"));
 }
 
 make_EHelper(push) {
