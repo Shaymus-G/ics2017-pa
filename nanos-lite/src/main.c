@@ -4,7 +4,7 @@
 #define HAS_ASYE
 //#define HAS_PTE
 
-#define USER_STACK_TOP 0x08000000
+#define USER_STACK_TOP 0x07f00000
 
 static void enter_user(uint32_t entry, const char *filename) {
   uintptr_t sp = USER_STACK_TOP;
@@ -12,23 +12,34 @@ static void enter_user(uint32_t entry, const char *filename) {
   size_t len = strlen(filename) + 1;
   sp -= len;
   memcpy((void *)sp, filename, len);
-  uintptr_t argv0 = sp;
+  uintptr_t argv0_str = sp;
 
   sp &= ~0x3;
 
   sp -= 4;
   *(uintptr_t *)sp = 0;
+  uintptr_t envp = sp;
 
   sp -= 4;
   *(uintptr_t *)sp = 0;
 
   sp -= 4;
-  *(uintptr_t *)sp = argv0;
+  *(uintptr_t *)sp = argv0_str;
+  uintptr_t argv = sp;
+
+  sp -= 4;
+  *(uintptr_t *)sp = envp;
+
+  sp -= 4;
+  *(uintptr_t *)sp = argv;
 
   sp -= 4;
   *(uintptr_t *)sp = 1;
 
-  Log("enter user: entry = 0x%x, esp = 0x%x, argv0 = %s", entry, sp, (char *)argv0);
+  sp -= 4;
+  *(uintptr_t *)sp = 0;
+
+  Log("enter user: entry = 0x%x, esp = 0x%x, argv = 0x%x, envp = 0x%x, argv0 = %s", entry, sp, argv, envp, (char *)argv0_str);
 
   asm volatile(
     "movl %0, %%esp;"
