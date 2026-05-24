@@ -45,7 +45,15 @@ _RegSet* do_syscall(_RegSet *r) {
       break;
 
     case SYS_brk:
-      r->eax = 0;
+      uintptr_t new_brk = a[1];
+
+      if (new_brk >= 0x04000000 && new_brk < 0x08000000) {
+        r->eax = 0;
+      } else {
+	Log("SYS_brk failed: new_brk = 0x%x", new_brk);
+	r->eax = -1;
+      }
+
       break;
 
     default:

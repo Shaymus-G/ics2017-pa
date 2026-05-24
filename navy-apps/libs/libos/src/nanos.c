@@ -36,7 +36,7 @@ void *_sbrk(intptr_t increment){
   static uintptr_t brk = 0;
 
   if (brk == 0) {
-    brk = (uintptr_t)&end;
+    brk = 0x04100000;
   }
 
   uintptr_t old_brk = brk;
