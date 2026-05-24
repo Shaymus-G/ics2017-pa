@@ -1,8 +1,6 @@
 #include "common.h"
 #include "syscall.h"
 
-extern void naive_uload(_Protect *as, const char *filename);
-
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
   a[0] = SYSCALL_ARG1(r);
@@ -17,7 +15,7 @@ _RegSet* do_syscall(_RegSet *r) {
 
     case SYS_exit:
       Log("SYS_exit, status = %d", a[1]);
-      naive_uload(NULL, NULL);
+      _halt(a[1]);
       break;
 
     default:
