@@ -105,3 +105,29 @@ make_EHelper(lea) {
   operand_write(id_dest, &t2);
   print_asm_template2(lea);
 }
+
+make_EHelper(bsr) {
+  uint32_t src = id_src->val;
+  rtlreg_t result = 0;
+
+  if (id_src->width == 2) {
+    src &= 0xffff;
+  }
+
+  if (src == 0) {
+    cpu.ZF = 1;
+  } else {
+    cpu.ZF = 0;
+
+    for (int i = id_src->width * 8 - 1; i >= 0; i--) {
+      if (src & (1u << i)) {
+        result = i;
+	break;
+      }
+    }
+
+    operand_write(id_dest, &result);
+  }
+
+  print_asm_template2(bsr);
+}
