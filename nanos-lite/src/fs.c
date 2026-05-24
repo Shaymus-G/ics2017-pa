@@ -14,9 +14,9 @@ static Finfo file_table[] __attribute__((used)) = {
   {"stdin (note that this is not the actual stdin)", 0, 0},
   {"stdout (note that this is not the actual stdout)", 0, 0},
   {"stderr (note that this is not the actual stderr)", 0, 0},
-  [FD_FB] = {"/dev/fb", 0, 0},
-  [FD_EVENTS] = {"/dev/events", 0, 0},
-  [FD_DISPINFO] = {"/proc/dispinfo", 128, 0},
+  [FD_FB] = {"/dev/fb", 0, 0, 0},
+  [FD_EVENTS] = {"/dev/events", 0, 0, 0},
+  [FD_DISPINFO] = {"/proc/dispinfo", 128, 0, 0},
 #include "files.h"
 };
 
