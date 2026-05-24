@@ -9,9 +9,9 @@ make_EHelper(mov) {
 make_EHelper(movs) {
   int width = decoding.dest.width;
 
-  if (cpu.esi >= 0x07fff000 || cpu.edi >= 0x07fff000) {
-    Log("movs near boundary: eip=0x%x esi=0x%x edi=0x%x eax=0x%x ecx=0x%x edx=0x%x width=%d DF=%d", cpu.eip, cpu.esi, cpu.edi, cpu.eax, cpu.ecx, cpu.edx, width, cpu.DF);
-  }
+  //if (cpu.esi >= 0x07fff000 || cpu.edi >= 0x07fff000) {
+    //Log("movs near boundary: eip=0x%x esi=0x%x edi=0x%x eax=0x%x ecx=0x%x edx=0x%x width=%d DF=%d", cpu.eip, cpu.esi, cpu.edi, cpu.eax, cpu.ecx, cpu.edx, width, cpu.DF);
+  //}
 
   uint32_t data = vaddr_read(cpu.esi, width);
   vaddr_write(cpu.edi, width, data);
