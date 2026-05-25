@@ -13,7 +13,7 @@ uintptr_t loader(_Protect *as, const char *filename) {
   (void)as;
 
   if (filename == NULL) {
-    filename = "/bin/init";
+    filename = "/bin/pal";
   }
 
   int fd = fs_open(filename, 0, 0);
