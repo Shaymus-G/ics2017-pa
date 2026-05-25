@@ -41,23 +41,24 @@ size_t events_read(void *buf, size_t len) {
     int key = _read_key();
 
     if (key != _KEY_NONE) {
-      const char *type;
-      int keycode;
+      //const char *type;
+      //int keycode;
 
-      if (key & 0x8000) {
-        type = "kd";
-	keycode = key & ~0x8000;
-      } else {
-	type = "ku";
-	keycode = key;
-      }
+      //if (key & 0x8000) {
+        //type = "kd";
+	//keycode = key & ~0x8000;
+      //} else {
+	//type = "ku";
+	//keycode = key;
+      //}
 
-      if (keycode > 0 && keycode < 256 && keyname[keycode] != NULL) {
-	event_len = snprintf(event_buf, sizeof(event_buf), "%s %s\n", type, keyname[keycode]);
+      //if (keycode > 0 && keycode < 256 && keyname[keycode] != NULL) {
+	//event_len = snprintf(event_buf, sizeof(event_buf), "%s %s\n", type, keyname[keycode]);
 
-	Log("events_read return event: %s", event_buf);
-	break;
-      }
+	//Log("events_read return event: %s", event_buf);
+	//break;
+      //}
+      return 0;
     }
 
   //int key = _read_key();

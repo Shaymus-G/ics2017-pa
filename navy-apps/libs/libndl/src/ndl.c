@@ -89,14 +89,30 @@ static const char *keys[] = {
 #define numkeys ( sizeof(keys) / sizeof(keys[0]) )
 
 int NDL_WaitEvent(NDL_Event *event) {
-  char buf[256], *p = buf;
-  int ch;
+  char buf[256];
 
   while (1) {
+    char *p = buf;
+    int ch;
+
+    memset(buf, 0, sizeof(buf));
+
     while ((ch = getc(evtdev)) != -1) {
+      if (p - buf >= sizeof(buf) - 1) {
+	p = buf;
+	memset(buf, 0, sizeof(buf));
+	break;
+      }
+
       *p ++ = (char)ch;
-      assert(p - buf < sizeof(buf));
+      //assert(p - buf < sizeof(buf));
       if (ch == '\n') break;
+    }
+
+    *p = '\0';
+
+    if (buf[0] == '\0') {
+      continue;
     }
 
     if (buf[0] == 'k') {
