@@ -72,8 +72,7 @@ int _fstat(int fd, struct stat *buf) {
 }
 
 int execve(const char *fname, char * const argv[], char *const envp[]) {
-  assert(0);
-  return -1;
+  return _syscall_(SYS_execve, (uintptr_t)fname, (uintptr_t)argv, (uintptr_t)envp);
 }
 
 int _execve(const char *fname, char * const argv[], char *const envp[]) {
