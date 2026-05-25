@@ -80,7 +80,7 @@ int main() {
 
   //uint32_t entry = loader(NULL, "/bin/init");
   //((void (*)(void))entry)();
-  const char *filename = "/bin/init";
+  const char *filename = "/bin/pal";
   uint32_t entry = loader(NULL, filename);
   enter_user(entry, filename);
 
