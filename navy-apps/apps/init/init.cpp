@@ -77,7 +77,7 @@ int main(int argc, char *argv[], char *envp[]) {
       char cmd[32], data[32];
 
       int ret = fscanf(evtdev, "%s %s", cmd, data);
-      printf("debug init: fscanf ret=%d\n", ret);
+      //printf("debug init: fscanf ret=%d\n", ret);
 
       if (ret != 2) {
         continue;
@@ -85,11 +85,11 @@ int main(int argc, char *argv[], char *envp[]) {
       //if (fscanf(evtdev, "%s %s", cmd, data) != 2) {
         //continue;
       //}
-      printf("debug init: cmd=%s data=%s\n", cmd, data);
+      //printf("debug init: cmd=%s data=%s\n", cmd, data);
 
       if (strcmp(cmd, "kd") == 0) {
         sscanf(data, "%d", &i);
-	printf("debug init: parsed i=%d\n", i);
+	printf("debug init: cmd=%s data=%s parsed i=%d\n", cmd, data, i);
       }
     } while (i == 0);
 
