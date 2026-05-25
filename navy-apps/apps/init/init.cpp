@@ -75,11 +75,21 @@ int main(int argc, char *argv[], char *envp[]) {
     int i = 0;
     do {
       char cmd[32], data[32];
-      if (fscanf(evtdev, "%s %s", cmd, data) != 2) {
+
+      int ret = fscanf(evtdev, "%s %s", cmd, data);
+      printf("debug init: fscanf ret=%d\n", ret);
+
+      if (ret != 2) {
         continue;
       }
+      //if (fscanf(evtdev, "%s %s", cmd, data) != 2) {
+        //continue;
+      //}
+      printf("debug init: cmd=%s data=%s\n", cmd, data);
+
       if (strcmp(cmd, "kd") == 0) {
         sscanf(data, "%d", &i);
+	printf("debug init: parsed i=%d\n", i);
       }
     } while (i == 0);
 
@@ -92,6 +102,8 @@ int main(int argc, char *argv[], char *envp[]) {
         item->arg1,
         NULL,
       };
+      printf("debug init: about to execve %s %s\n", exec_argv[0], exec_argv[1] == NULL ? "(null)" : exec_argv[1]);
+
       execve(exec_argv[0], (char**)exec_argv, (char**)envp);
       fprintf(stderr, "\033[31m[ERROR]\033[0m Exec %s failed.\n\n", exec_argv[0]);
     } else {
