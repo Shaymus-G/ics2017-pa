@@ -115,6 +115,8 @@ int NDL_WaitEvent(NDL_Event *event) {
       continue;
     }
 
+    printf("debug ndl event: %s", buf);
+
     if (buf[0] == 'k') {
       char keyname[32];
       event->type = buf[1] == 'd' ? NDL_EVENT_KEYDOWN : NDL_EVENT_KEYUP;
