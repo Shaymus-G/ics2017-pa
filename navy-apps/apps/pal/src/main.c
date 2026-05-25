@@ -43,6 +43,9 @@
 #define SPRITENUM_SPLASH_CRANE      0x49
 #define NUM_RIX_TITLE               0x5
 #endif
+
+static int debug_splash_loop_cnt = 0;
+
 static VOID
 PAL_Init(
    WORD             wScreenWidth,
@@ -339,11 +342,18 @@ PAL_SplashScreen(
    //
    // Clear all of the events and key states
    //
+
+   printf("debug pal: before first PAL_ProcessEvent\n");
+   fflush(stdout);
    PAL_ProcessEvent();
+   printf("debug pal: after first PAL_ProcessEvent\n");
+   fflush(stdout);
    PAL_ClearKeyState();
-
+   printf("debug pal: after PAL_ClearKeyState\n");
+   fflush(stdout);
    dwBeginTime = SDL_GetTicks();
-
+   printf("debug pal: dwBeginTime=%u\n", dwBeginTime);
+   fflush(stdout);
    srcrect.x = 0;
    srcrect.w = 320;
    dstrect.x = 0;
@@ -351,8 +361,21 @@ PAL_SplashScreen(
 
    while (TRUE)
    {
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: loop begin %d\n", debug_splash_loop_cnt);
+	fflush(stdout);
+      }
       PAL_ProcessEvent();
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: after loop PAL_ProcessEvent, ticks=%u\n", SDL_GetTicks());
+	fflush(stdout);
+      }
+
       dwTime = SDL_GetTicks() - dwBeginTime;
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: dwTime=%u\n", dwTime);
+	fflush(stdout);
+      }
 
       //
       // Set the palette
@@ -367,7 +390,18 @@ PAL_SplashScreen(
          }
       }
 
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: before VIDEO_SetPalette\n");
+	fflush(stdout);
+      }
+
       VIDEO_SetPalette(rgCurrentPalette);
+
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: after VIDEO_SetPalette\n");
+	fflush(stdout);
+      }
+
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	  SDL_SetSurfacePalette(lpBitmapDown, gpScreen->format->palette);
 	  SDL_SetSurfacePalette(lpBitmapUp, gpScreen->format->palette);
@@ -434,8 +468,25 @@ PAL_SplashScreen(
          lpBitmapTitle[3] = (w >> 8);
       }
 
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: before title blit\n");
+	fflush(stdout);
+      }
+
       PAL_RLEBlitToSurface(lpBitmapTitle, gpScreen, PAL_XY(255, 10));
+
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: before VIDEO_UpdateScreen\n");
+	fflush(stdout);
+      }
+
       VIDEO_UpdateScreen(NULL);
+
+      if (debug_splash_loop_cnt < 10) {
+	printf("debug pal: after VIDEO_UpdateScreen\n");
+	fflush(stdout);
+      }
+
 
       //
       // Check for keypress...

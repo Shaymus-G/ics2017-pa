@@ -1,6 +1,7 @@
 #include "hal.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <ndl.h>
 
 #define NR_KEYS 18
@@ -34,10 +35,26 @@ PAL_PollEvent(
 --*/
 {
   NDL_Event evt;
+
+  static int debug_poll_cnt = 0;
+  if (debug_poll_cnt < 20) {
+    printf("debug hal: before NDL_WaitEvent, systime=%u\n", systime);
+    fflush(stdout);
+  }
+
   NDL_WaitEvent(&evt);
+
+  if (debug_poll_cnt < 20) {
+    printf("debug hal: after NDL_WaitEvent, type=%d data=%d\n", evt.type, evt.data);
+    fflush(stdout);
+  }
   
   if (evt.type == NDL_EVENT_TIMER) {
     systime = evt.data;
+    if (debug_poll_cnt < 20) {
+      printf("debug hal: update systime=%u\n", systime);
+      fflush(stdout);
+    }
   }
 
   if (evt.type == NDL_EVENT_KEYUP || evt.type == NDL_EVENT_KEYDOWN) {
@@ -67,9 +84,20 @@ PAL_PollEvent(
       if (kd) PAL_KeyPressHandler(key);
       else PAL_KeyReleaseHandler(key);
     }
+
+    if (debug_poll_cnt < 20) {
+      printf("debug hal: PAL_PollEvent return true, key=%d kd=%d\n", key, kd);
+      fflush(stdout);
+      debug_poll_cnt++;
+    }
     return true;
   }
 
+  if (debug_poll_cnt < 20) {
+    printf("debug hal: PAL_PollEvent return false\n");
+    fflush(stdout);
+    debug_poll_cnt++;
+  }
   return false;
 }
 
@@ -94,12 +122,36 @@ static intptr_t VMEM_ADDR = (intptr_t)&vmem[0];
 static uint32_t palette[256];
 
 static void redraw() {
+  static int debug_redraw_cnt = 0;
+
+  if (debug_redraw_cnt < 10) {
+    printf("debug hal: redraw begin %d\n", debug_redraw_cnt);
+    fflush(stdout);
+  }
+
   for (int i = 0; i < W; i ++)
     for (int j = 0; j < H; j ++)
       fb[i + j * W] = palette[vmem[i + j * W]];
 
+  if (debug_redraw_cnt < 10) {
+    printf("debug hal: before NDL_DrawRect\n");
+    fflush(stdout);
+  }
+
   NDL_DrawRect(fb, 0, 0, W, H);
+
+  if (debug_redraw_cnt < 10) {
+    printf("debug hal: before NDL_Render\n");
+    fflush(stdout);
+  }
+
   NDL_Render();
+
+  if (debug_redraw_cnt < 10) {
+    printf("debug hal: after NDL_Render\n");
+    fflush(stdout);
+    debug_redraw_cnt++;
+  }
 }
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, 
