@@ -80,7 +80,7 @@ int main() {
 
   //uint32_t entry = loader(NULL, "/bin/init");
   //((void (*)(void))entry)();
-  const char *filename = "/bin/events";
+  const char *filename = "/bin/init";
   uint32_t entry = loader(NULL, filename);
   enter_user(entry, filename);
 

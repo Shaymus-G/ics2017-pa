@@ -11,8 +11,30 @@ static const char *keyname[256] __attribute__((used)) = {
 static char dispinfo[128] __attribute__((used));
 
 size_t events_read(void *buf, size_t len) {
+  static char event_buf[32];
+  static size_t event_len = 0;
+  static size_t event_pos = 0;
+  static unsigned long last_time = 0;
+
   if (len == 0) {
     return 0;
+  }
+
+  if (event_pos < event_len) {
+    size_t n = event_len - event_pos;
+    if (n > len) {
+      n = len;
+    }
+
+    memcpy(buf, event_buf + event_pos, n);
+    event_pos += n;
+
+    if (event_pos >= event_len) {
+      event_pos = 0;
+      event_len = 0;
+    }
+
+    return n;
   }
 
   int key = _read_key();
@@ -29,16 +51,57 @@ size_t events_read(void *buf, size_t len) {
       keycode = key;
     }
 
-    Log("events_read: raw_key=0x%x, type=%s, keycode=%d, keyname=%s", key, type, keycode, (keycode > 0 && keycode <256 && keyname[keycode] != NULL) ? keyname[keycode] : "UNKNOWN");
+    //Log("events_read: raw_key=0x%x, type=%s, keycode=%d, keyname=%s", key, type, keycode, (keycode > 0 && keycode <256 && keyname[keycode] != NULL) ? keyname[keycode] : "UNKNOWN");
 
     if (keycode > 0 && keycode < 256 && keyname[keycode] != NULL) {
-      int n =snprintf((char *)buf, len, "%s %s\n", type, keyname[keycode]);
-      return n < len ? n : len;
+      event_len = snprintf(event_buf, sizeof(event_buf), "%s %s\n", type, keyname[keycode]);
+      event_pos = 0;
+
+      size_t n = event_len;
+      if (n > len) {
+        n = len;
+      }
+
+      memcpy(buf, event_buf, n);
+      event_pos += n;
+
+      if (event_pos >= event_len) {
+        event_pos = 0;
+	event_len = 0;
+      }
+
+      return n;
+      //int n =snprintf((char *)buf, len, "%s %s\n", type, keyname[keycode]);
+      //return n < len ? n : len;
     }
   }
 
-  int n =snprintf((char *)buf, len, "t %lu\n", _uptime());
-  return n < len ? n : len;
+  unsigned long now = _uptime();
+  if (now - last_time >= 100) {
+    last_time = now;
+
+    event_len = snprintf(event_buf, sizeof(event_buf), "t %u\n", (unsigned)now);
+    event_pos = 0;
+
+    size_t n = event_len;
+    if (n > len) {
+      n = len;
+    }
+
+    memcpy(buf, event_buf, n);
+    event_pos += n;
+    
+    if (event_pos >= event_len) {
+      event_pos = 0;
+      event_len = 0;
+    }
+
+    return n;
+  }
+
+  return 0;
+  //int n =snprintf((char *)buf, len, "t %lu\n", _uptime());
+  //return n < len ? n : len;
 }
 
 void dispinfo_read(void *buf, off_t offset, size_t len) {
