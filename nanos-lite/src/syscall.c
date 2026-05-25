@@ -44,7 +44,7 @@ _RegSet* do_syscall(_RegSet *r) {
       r->eax = fs_close(a[1]);
       break;
 
-    case SYS_brk:
+    case SYS_brk: {
       uintptr_t new_brk = a[1];
       //Log("SYS_brk: new_brk = 0x%x", new_brk);
 
@@ -56,6 +56,14 @@ _RegSet* do_syscall(_RegSet *r) {
       }
 
       break;
+		  }
+
+    case SYS_execve: {
+      const char *filename = (const char *)a[1];
+      Log("SYS_execve called: filename = %s", filename);
+      r->eax = -1;
+      break;
+		     }
 
     default:
       panic("Unhandled syscall ID = %d", a[0]);
