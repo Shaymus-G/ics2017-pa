@@ -209,8 +209,8 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_SetPalette(SDL_Surface *s, int flags, SDL_Color *colors, 
     int firstcolor, int ncolors) {
-  printf("debug palette: s=%p flags=0x%x colors=%p first=%d n=%d\n", s, flags, colors, firstcolor, ncolors);
-  fflush(stdout);
+  //printf("debug palette: s=%p flags=0x%x colors=%p first=%d n=%d\n", s, flags, colors, firstcolor, ncolors);
+  //fflush(stdout);
   assert(s);
   assert(s->format);
   assert(s->format->palette);
@@ -285,21 +285,21 @@ void SDL_SoftStretch(SDL_Surface *src, SDL_Rect *srcrect,
 
 SDL_Surface* SDL_CreateRGBSurface(uint32_t flags, int width, int height, int depth,
     uint32_t Rmask, uint32_t Gmask, uint32_t Bmask, uint32_t Amask) {
-  printf("debug surface: create flags=0x%x width=%d height=%d depth=%d\n", flags, width, height, depth);
-  fflush(stdout);
+  //printf("debug surface: create flags=0x%x width=%d height=%d depth=%d\n", flags, width, height, depth);
+  //fflush(stdout);
   SDL_Surface *s = malloc(sizeof(SDL_Surface));
-  printf("debug surface: s=%p\n", s);
-  fflush(stdout);
+  //printf("debug surface: s=%p\n", s);
+  //fflush(stdout);
 
   assert(s);
   s->format = malloc(sizeof(SDL_PixelFormat));
-  printf("debug surface: s->format=%p\n", s->format);
-  fflush(stdout);
+  //printf("debug surface: s->format=%p\n", s->format);
+  //fflush(stdout);
 
   assert(s->format);
   s->format->palette = malloc(sizeof(SDL_Palette));
-  printf("debug surface: s->format->palette=%p\n", s->format->palette);
-  fflush(stdout);
+  //printf("debug surface: s->format->palette=%p\n", s->format->palette);
+  //fflush(stdout);
 
   assert(s->format->palette);
   s->format->palette->colors = NULL;
