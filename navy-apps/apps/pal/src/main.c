@@ -520,6 +520,8 @@ PAL_SplashScreen(
 			   SDL_SetSurfacePalette(lpBitmapDown, gpScreen->format->palette);
 			   SDL_SetSurfacePalette(lpBitmapUp, gpScreen->format->palette);
 #else
+			   printf("debug splash: lpBitmapDown=%p lpBitmapUp=%p gpScreen=%p\n", lpBitmapDown, lpBitmapUp, gpScreen);
+			   fflush(stdout);
 			   SDL_SetPalette(lpBitmapDown, SDL_PHYSPAL | SDL_LOGPAL, VIDEO_GetPalette(), 0, 256);
 			   SDL_SetPalette(lpBitmapUp, SDL_PHYSPAL | SDL_LOGPAL, VIDEO_GetPalette(), 0, 256);
 #endif
