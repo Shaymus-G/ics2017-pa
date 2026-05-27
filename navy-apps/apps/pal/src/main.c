@@ -606,7 +606,32 @@ main_loop() {
    // Show the trademark screen and splash screen
    //
    // TODO: should we display these?
-   PAL_TrademarkScreen();
+   VOID
+   PAL_TrademarkScreen(
+     VOID
+   );
+   {
+     printf("debug trademark: before PAL_SetPalette\n");
+     fflush(stdout);
+     PAL_SetPalette(3, FALSE);
+     printf("debug reademark: after PAL_SetPalette\n");
+     fflush(stdout);
+     printf("debug reademark: before PAL_RNGPlay\n");
+     fflush(stdout);
+     PAL_RNGPlay(6, 0, 1000, 25);
+     printf("debug reademark: after PAL_RNGPlay\n");
+     fflush(stdout);
+     printf("debug reademark: before UTIL_Delay\n");
+     fflush(stdout);
+     UTIL_Delay(1000);
+     printf("debug reademark: after UTIL_Delay\n");
+     fflush(stdout);
+     printf("debug reademark: before PAL_FadeOut\n");
+     fflush(stdout);
+     PAL_FadeOut(1);
+     printf("debug reademark: after PAL_FadeOut\n");
+     fflush(stdout);
+   }
    PAL_SplashScreen();
 
    //
