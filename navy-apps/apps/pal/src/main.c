@@ -44,7 +44,7 @@
 #define NUM_RIX_TITLE               0x5
 #endif
 
-static int debug_splash_loop_cnt = 0;
+//static int debug_splash_loop_cnt = 0;
 
 static VOID
 PAL_Init(
@@ -343,17 +343,17 @@ PAL_SplashScreen(
    // Clear all of the events and key states
    //
 
-   printf("debug pal: before first PAL_ProcessEvent\n");
-   fflush(stdout);
+   //printf("debug pal: before first PAL_ProcessEvent\n");
+   //fflush(stdout);
    PAL_ProcessEvent();
-   printf("debug pal: after first PAL_ProcessEvent\n");
-   fflush(stdout);
+   //printf("debug pal: after first PAL_ProcessEvent\n");
+   //fflush(stdout);
    PAL_ClearKeyState();
-   printf("debug pal: after PAL_ClearKeyState\n");
-   fflush(stdout);
+   //printf("debug pal: after PAL_ClearKeyState\n");
+   //fflush(stdout);
    dwBeginTime = SDL_GetTicks();
-   printf("debug pal: dwBeginTime=%u\n", dwBeginTime);
-   fflush(stdout);
+   //printf("debug pal: dwBeginTime=%u\n", dwBeginTime);
+   //fflush(stdout);
    srcrect.x = 0;
    srcrect.w = 320;
    dstrect.x = 0;
@@ -361,21 +361,21 @@ PAL_SplashScreen(
 
    while (TRUE)
    {
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: loop begin %d\n", debug_splash_loop_cnt);
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: loop begin %d\n", debug_splash_loop_cnt);
+	//fflush(stdout);
+      //}
       PAL_ProcessEvent();
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: after loop PAL_ProcessEvent, ticks=%u\n", SDL_GetTicks());
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: after loop PAL_ProcessEvent, ticks=%u\n", SDL_GetTicks());
+	//fflush(stdout);
+      //}
 
       dwTime = SDL_GetTicks() - dwBeginTime;
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: dwTime=%u\n", dwTime);
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: dwTime=%u\n", dwTime);
+	//fflush(stdout);
+      //}
 
       //
       // Set the palette
@@ -390,24 +390,24 @@ PAL_SplashScreen(
          }
       }
 
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: before VIDEO_SetPalette\n");
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: before VIDEO_SetPalette\n");
+	//fflush(stdout);
+      //}
 
       VIDEO_SetPalette(rgCurrentPalette);
 
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: after VIDEO_SetPalette\n");
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: after VIDEO_SetPalette\n");
+	//fflush(stdout);
+      //}
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	  SDL_SetSurfacePalette(lpBitmapDown, gpScreen->format->palette);
 	  SDL_SetSurfacePalette(lpBitmapUp, gpScreen->format->palette);
 #else
-      printf("debug splash: lpBitmapDown=%p lpBitmapUp=%p gpScreen=%p\n", lpBitmapDown, lpBitmapUp, gpScreen);
-      fflush(stdout);
+      //printf("debug splash: lpBitmapDown=%p lpBitmapUp=%p gpScreen=%p\n", lpBitmapDown, lpBitmapUp, gpScreen);
+      //fflush(stdout);
       SDL_SetPalette(lpBitmapDown, SDL_LOGPAL | SDL_PHYSPAL, VIDEO_GetPalette(), 0, 256);
       SDL_SetPalette(lpBitmapUp, SDL_LOGPAL | SDL_PHYSPAL, VIDEO_GetPalette(), 0, 256);
 #endif
@@ -470,24 +470,24 @@ PAL_SplashScreen(
          lpBitmapTitle[3] = (w >> 8);
       }
 
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: before title blit\n");
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: before title blit\n");
+	//fflush(stdout);
+      //}
 
       PAL_RLEBlitToSurface(lpBitmapTitle, gpScreen, PAL_XY(255, 10));
 
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: before VIDEO_UpdateScreen\n");
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: before VIDEO_UpdateScreen\n");
+	//fflush(stdout);
+      //}
 
       VIDEO_UpdateScreen(NULL);
 
-      if (debug_splash_loop_cnt < 10) {
-	printf("debug pal: after VIDEO_UpdateScreen\n");
-	fflush(stdout);
-      }
+      //if (debug_splash_loop_cnt < 10) {
+	//printf("debug pal: after VIDEO_UpdateScreen\n");
+	//fflush(stdout);
+      //}
 
 
       //
@@ -611,26 +611,26 @@ main_loop() {
      VOID
    );
    {
-     printf("debug trademark: before PAL_SetPalette\n");
-     fflush(stdout);
+     //printf("debug trademark: before PAL_SetPalette\n");
+     //fflush(stdout);
      PAL_SetPalette(3, FALSE);
-     printf("debug reademark: after PAL_SetPalette\n");
-     fflush(stdout);
-     printf("debug reademark: before PAL_RNGPlay\n");
-     fflush(stdout);
+     //printf("debug reademark: after PAL_SetPalette\n");
+     //fflush(stdout);
+     //printf("debug reademark: before PAL_RNGPlay\n");
+     //fflush(stdout);
      PAL_RNGPlay(6, 0, 1000, 25);
-     printf("debug reademark: after PAL_RNGPlay\n");
-     fflush(stdout);
-     printf("debug reademark: before UTIL_Delay\n");
-     fflush(stdout);
+     //printf("debug reademark: after PAL_RNGPlay\n");
+     //fflush(stdout);
+     //printf("debug reademark: before UTIL_Delay\n");
+     //fflush(stdout);
      UTIL_Delay(1000);
-     printf("debug reademark: after UTIL_Delay\n");
-     fflush(stdout);
-     printf("debug reademark: before PAL_FadeOut\n");
-     fflush(stdout);
+     //printf("debug reademark: after UTIL_Delay\n");
+     //fflush(stdout);
+     //printf("debug reademark: before PAL_FadeOut\n");
+     //fflush(stdout);
      PAL_FadeOut(1);
-     printf("debug reademark: after PAL_FadeOut\n");
-     fflush(stdout);
+     //printf("debug reademark: after PAL_FadeOut\n");
+     //fflush(stdout);
    }
    PAL_SplashScreen();
 
