@@ -115,7 +115,7 @@ int NDL_WaitEvent(NDL_Event *event) {
       continue;
     }
 
-    printf("debug ndl event: %s", buf);
+    //printf("debug ndl event: %s", buf);
 
     if (buf[0] == 'k') {
       char keyname[32];
