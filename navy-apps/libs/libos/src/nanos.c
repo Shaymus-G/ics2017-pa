@@ -30,17 +30,23 @@ int _write(int fd, const void *buf, size_t count){
   return _syscall_(SYS_write, fd, (uintptr_t)buf, count);
 }
 
-extern char end;
+#define HEAP_START 0x06000000
+#define HEAP_END 0x07e00000
+//extern char end;
 
 void *_sbrk(intptr_t increment){
   static uintptr_t brk = 0;
 
   if (brk == 0) {
-    brk = 0x04100000;
+    brk = HEAP_START;
   }
 
   uintptr_t old_brk = brk;
   uintptr_t new_brk = brk + increment;
+
+  if (new_brk < HEAP_START || new_brk >= HEAP_END) {
+    return (void *)-1;
+  }
 
   int ret = _syscall_(SYS_brk, new_brk, 0, 0);
   if (ret == 0) {
