@@ -209,7 +209,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
 
 void SDL_SetPalette(SDL_Surface *s, int flags, SDL_Color *colors, 
     int firstcolor, int ncolors) {
-  printf("debug palette: s=%p flags=0x%x colors=%p first=%d n=%d", s, flags, colors, firstcolor, ncolors);
+  printf("debug palette: s=%p flags=0x%x colors=%p first=%d n=%d\n", s, flags, colors, firstcolor, ncolors);
   fflush(stdout);
   assert(s);
   assert(s->format);

@@ -619,8 +619,16 @@ VIDEO_SetPalette(
 
    VIDEO_UpdateScreen(NULL);
 #else
+   printf("debug VIDEO_SetPalette: gpScreen=%p gpScreenBak=%p gpScreenReal=%p rgPallette=%p\n", gpScreen, gpScreenBak, gpScreenReal, rgPalette);
+   fflush(stdout);
+   printf("debug VIDEO_SetPalette: call gpScreen\n");
+   fflush(stdout);
    SDL_SetPalette(gpScreen, SDL_LOGPAL | SDL_PHYSPAL, rgPalette, 0, 256);
+   printf("debug VIDEO_SetPalette: call gpScreenBak\n");
+   fflush(stdout);
    SDL_SetPalette(gpScreenBak, SDL_LOGPAL | SDL_PHYSPAL, rgPalette, 0, 256);
+   printf("debug VIDEO_SetPalette: call gpScreenReal\n");
+   fflush(stdout);
    SDL_SetPalette(gpScreenReal, SDL_LOGPAL | SDL_PHYSPAL, rgPalette, 0, 256);
 #if (defined (__SYMBIAN32__))
    {
