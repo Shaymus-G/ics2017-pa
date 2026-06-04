@@ -83,7 +83,7 @@ int main() {
 
   //uint32_t entry = loader(NULL, "/bin/init");
   //((void (*)(void))entry)();
-  const char *filename = "/bin/dummy";
+  const char *filename = "/bin/pal";
 
 #ifdef HAS_PTE
   load_prog(filename);
