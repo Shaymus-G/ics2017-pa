@@ -58,6 +58,21 @@ typedef struct {
     uint32_t eflags;
   };
 
+  union {
+    struct {
+      uint32_t PE : 1;
+      uint32_t MP : 1;
+      uint32_t EM : 1;
+      uint32_t TS : 1;
+      uint32_t ET : 1;
+      uint32_t    : 26;
+      uint32_t PG : 1;
+    };
+    uint32_t val;
+  } cr0;
+
+  uint32_t cr3;
+
   struct {
     uint16_t limit;
     uint32_t base;
