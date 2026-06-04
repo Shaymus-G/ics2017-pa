@@ -2,7 +2,7 @@
 
 /* Uncomment these macros to enable corresponding functionality. */
 #define HAS_ASYE
-//#define HAS_PTE
+#define HAS_PTE
 
 #define USER_STACK_TOP 0x07f00000
 
@@ -80,7 +80,7 @@ int main() {
 
   //uint32_t entry = loader(NULL, "/bin/init");
   //((void (*)(void))entry)();
-  const char *filename = "/bin/pal";
+  const char *filename = "/bin/dummy";
   uint32_t entry = loader(NULL, filename);
   enter_user(entry, filename);
 
