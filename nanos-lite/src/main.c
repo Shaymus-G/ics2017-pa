@@ -6,6 +6,7 @@
 
 #define USER_STACK_TOP 0x07f00000
 
+#ifndef HAS_PTE
 static void enter_user(uint32_t entry, const char *filename) {
   uintptr_t sp = USER_STACK_TOP;
 
@@ -51,6 +52,7 @@ static void enter_user(uint32_t entry, const char *filename) {
 
   panic("Should not reach here");
 }
+#endif
 
 void init_mm(void);
 void init_ramdisk(void);
@@ -58,6 +60,7 @@ void init_device(void);
 void init_irq(void);
 void init_fs(void);
 uint32_t loader(_Protect *, const char *);
+void load_prog(const char *filename);
 
 int main() {
 #ifdef HAS_PTE
@@ -81,8 +84,13 @@ int main() {
   //uint32_t entry = loader(NULL, "/bin/init");
   //((void (*)(void))entry)();
   const char *filename = "/bin/dummy";
+
+#ifdef HAS_PTE
+  load_prog(filename);
+#else
   uint32_t entry = loader(NULL, filename);
   enter_user(entry, filename);
+#endif
 
   panic("Should not reach here");
 }
