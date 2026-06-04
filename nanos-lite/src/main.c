@@ -61,6 +61,7 @@ void init_irq(void);
 void init_fs(void);
 uint32_t loader(_Protect *, const char *);
 void load_prog(const char *filename);
+void run_first_proc(void);
 
 int main() {
 #ifdef HAS_PTE
@@ -87,6 +88,7 @@ int main() {
 
 #ifdef HAS_PTE
   load_prog(filename);
+  run_first_proc();
 #else
   uint32_t entry = loader(NULL, filename);
   enter_user(entry, filename);

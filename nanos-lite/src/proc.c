@@ -15,17 +15,49 @@ void load_prog(const char *filename) {
   uintptr_t entry = loader(&pcb[i].as, filename);
 
   // TODO: remove the following three lines after you have implemented _umake()
-  _switch(&pcb[i].as);
-  current = &pcb[i];
-  ((void (*)(void))entry)();
 
   _Area stack;
   stack.start = pcb[i].stack;
   stack.end = stack.start + sizeof(pcb[i].stack);
 
   pcb[i].tf = _umake(&pcb[i].as, stack, stack, (void *)entry, NULL, NULL);
+
+  Log("load process %d: filename = %s, entry = 0x%x, tf = %p", i, filename, entry, pcb[i].tf);
 }
 
 _RegSet* schedule(_RegSet *prev) {
-  return NULL;
+  if (current != NULL && prev != NULL) {
+    current->tf = prev;
+  }
+
+  if (nr_proc == 0) {
+    return NULL;
+  }
+
+  int next = 0;
+  if (current != NULL) {
+    int cur = current - pcb;
+    next = (cur + 1) % nr_proc;
+  }
+
+  current = &pcb[next];
+  _switch(&current->as);
+
+  return current->tf;
+}
+
+void run_first_proc(void) {
+  _RegSet *tf = schedule(NULL);
+
+  asm volatile(
+    "movl %0, %%esp;"
+    "popal;"
+    "addl $8, %%esp;"
+    "iret"
+    :
+    : "r"(tf)
+    : "memory"
+  );
+
+  panic("Should not reach here");
 }
