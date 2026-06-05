@@ -25,5 +25,16 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   cpu.eip = handler;
 }
 
+static volatile bool intr_pending = false;
+
 void dev_raise_intr() {
+  intr_pending = true;
+}
+
+bool query_intr(void) {
+  if (intr_pending && cpu.IF) {
+    intr_pending = false;
+    return true;
+  }
+  return false;
 }

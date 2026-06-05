@@ -11,6 +11,8 @@
 int nemu_state = NEMU_STOP;
 
 void exec_wrapper(bool);
+bool query_intr(void);
+void raise_intr(uint8_t NO, vaddr_t ret_addr);
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
@@ -26,6 +28,10 @@ void cpu_exec(uint64_t n) {
     /* Execute one instruction, including instruction fetch,
      * instruction decode, and the actual execution. */
     exec_wrapper(print_flag);
+
+    if (query_intr()) {
+      raise_intr(0x20, cpu.eip);
+    }
 
 #ifdef DEBUG
     /* TODO: check watchpoints here. */
