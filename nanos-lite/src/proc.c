@@ -6,6 +6,7 @@ static PCB pcb[MAX_NR_PROC];
 static int nr_proc = 0;
 PCB *current = NULL;
 static int current_game = 0;
+static bool game_switch_pending = false;
 
 uintptr_t loader(_Protect *as, const char *filename);
 
@@ -38,6 +39,17 @@ void switch_game(void) {
     current_game = 0;
     Log("switch game: /bin/pal");
   }
+
+  game_switch_pending = true;
+}
+
+bool consume_game_switch_pending(void) {
+  if (game_switch_pending) {
+    game_switch_pending = false;
+    return true;
+  }
+
+  return false;
 }
 
 _RegSet* schedule(_RegSet *prev) {
