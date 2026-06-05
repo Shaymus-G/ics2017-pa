@@ -22,6 +22,7 @@ void raise_intr(uint8_t NO, vaddr_t ret_addr) {
   push32(cpu.cs);
   push32(ret_addr);
 
+  cpu.IF = 0;
   cpu.eip = handler;
 }
 
