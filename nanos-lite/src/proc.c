@@ -7,6 +7,7 @@ static int nr_proc = 0;
 PCB *current = NULL;
 static int current_game = 0;
 static bool game_switch_pending = false;
+static bool force_game_schedule = false;
 
 uintptr_t loader(_Protect *as, const char *filename);
 
@@ -46,6 +47,7 @@ void switch_game(void) {
 bool consume_game_switch_pending(void) {
   if (game_switch_pending) {
     game_switch_pending = false;
+    force_game_schedule = true;
     return true;
   }
 
@@ -65,7 +67,10 @@ _RegSet* schedule(_RegSet *prev) {
 
   int next = 0;
 
-  if (nr_proc >= 3) {
+  if (force_game_schedule) {
+    force_game_schedule = false;
+    next = current_game;
+  } else if(nr_proc >= 3) {
     sched_cnt ++;
 
     if (sched_cnt % 20 == 0) {
