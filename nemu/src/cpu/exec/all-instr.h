@@ -56,6 +56,7 @@ make_EHelper(iret);
 
 make_EHelper(nop);
 make_EHelper(operand_size);
+make_EHelper(seg_override);
 
 make_EHelper(inv);
 make_EHelper(nemu_trap);

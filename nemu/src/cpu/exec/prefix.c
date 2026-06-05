@@ -7,3 +7,7 @@ make_EHelper(operand_size) {
   exec_real(eip);
   decoding.is_operand_size_16 = false;
 }
+
+make_EHelper(seg_override) {
+  exec_real(eip);
+}
