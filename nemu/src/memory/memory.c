@@ -50,7 +50,7 @@ static paddr_t page_translate(vaddr_t addr, bool is_write) {
   PDE pde;
   pde.val = paddr_read(pde_addr, 4);
 
-  Assert(pde.present, "Page directory entry not present: vaddr = 0x%08x, pde_addr = 0x%08x, pde = 0x%08x", addr, pde_addr, pde.val);
+  Assert(pde.present, "Page directory entry not present: eip = 0x%08x, esp = 0x%08x, cr3 = 0x%08x, vaddr = 0x%08x, pde_addr = 0x%08x, pde = 0x%08x", cpu.eip, cpu.esp, cpu.cr3, addr, pde_addr, pde.val);
 
   if (!pde.accessed) {
     pde.accessed = 1;
@@ -63,7 +63,7 @@ static paddr_t page_translate(vaddr_t addr, bool is_write) {
   PTE pte;
   pte.val = paddr_read(pte_addr, 4);
 
-  Assert(pte.present, "Page table entry not present: vaddr = 0x%08x, pte_addr = 0x%08x, pte = 0x%08x", addr, pte_addr, pte.val);
+  Assert(pte.present, "Page table entry not present: eip = 0x%08x, esp = 0x%08x, cr3 = 0x%08x, vaddr = 0x%08x, pte_addr = 0x%08x, pte = 0x%08x", cpu.eip, cpu.esp, cpu.cr3, addr, pte_addr, pte.val);
 
   if (!pte.accessed || (is_write && !pte.dirty)) {
     pte.accessed = 1;
