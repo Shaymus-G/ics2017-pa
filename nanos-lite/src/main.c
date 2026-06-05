@@ -84,7 +84,7 @@ int main() {
 
 #ifdef HAS_PTE
   load_prog("/bin/pal");
-  //load_prog("/bin/hello");
+  load_prog("/bin/hello");
   run_first_proc();
 #else
   const char *filename = "/bin/pal";
