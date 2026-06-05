@@ -103,7 +103,7 @@ _RegSet* schedule(_RegSet *prev) {
 
   current = &pcb[next];
 
-  Log("schedule: old = %d, next = %d, current_game = %d, prev = %p, tf = %p, as.ptr = %p", old, next, current_game, prev, current->tf, current->as.ptr);
+  Log("schedule: old = %d, next = %d, current_game = %d, prev = %p, prev_eip = 0x%x, prev_esp = 0x%x, next_tf = %p, next_eip = 0x%x, next_esp = 0x%x, next_as = %p", old, next, current_game, prev, prev ? prev->eip : 0, prev ? prev->esp : 0, current->tf, current->tf ? current->tf->eip : 0, current->tf ? current->tf->esp : 0, current->as.ptr);
 
   _switch(&current->as);
 
