@@ -82,17 +82,23 @@ int main() {
 
   init_fs();
 
-  //uint32_t entry = loader(NULL, "/bin/init");
-  //((void (*)(void))entry)();
-  const char *filename = "/bin/pal";
-
 #ifdef HAS_PTE
-  load_prog(filename);
+  load_prog("/bin/pal");
+  load_prog("/bin/hello");
   run_first_proc();
 #else
-  uint32_t entry = loader(NULL, filename);
+  const char *filename = "/bin/pal";
+  uintew_t entry = loader(NULL, filename);
   enter_user(entry, filename);
 #endif
+
+//#ifdef HAS_PTE
+  //load_prog(filename);
+  //run_first_proc();
+//#else
+  //uint32_t entry = loader(NULL, filename);
+  //enter_user(entry, filename);
+//#endif
 
   panic("Should not reach here");
 }
