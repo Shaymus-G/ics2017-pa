@@ -10,12 +10,16 @@ static int current_game = 0;
 static bool force_game_schedule = false;
 
 uintptr_t loader(_Protect *as, const char *filename);
+extern uintptr_t loader_brk;
 
 void load_prog(const char *filename) {
   int i = nr_proc ++;
   _protect(&pcb[i].as);
 
   uintptr_t entry = loader(&pcb[i].as, filename);
+
+  pcb[i].cur_brk = loader_brk;
+  pcb[i].max_brk = loader_brk;
 
   // TODO: remove the following three lines after you have implemented _umake()
 
