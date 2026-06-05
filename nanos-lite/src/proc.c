@@ -57,6 +57,11 @@ void switch_game(void) {
 _RegSet* schedule(_RegSet *prev) {
   static int sched_cnt = 0;
 
+  int old = -1;
+  if (current != NULL) {
+    old = current - pcb;
+  }
+
   if (current != NULL && prev != NULL) {
     current->tf = prev;
   }
