@@ -1,5 +1,7 @@
 #include "common.h"
 
+void switch_game(void);
+
 #define NAME(key) \
   [_KEY_##key] = #key,
 
@@ -33,6 +35,10 @@ size_t events_read(void *buf, size_t len) {
     unsigned long current_time = _uptime();
     snprintf(buf, len, "t %u\n", (unsigned)current_time);
   } else {
+    if (is_keydown && key_code == _KEY_F12) {
+      switch_game();
+    }
+
     snprintf(buf, len, "%s %s\n", is_keydown ? "kd" : "ku", keyname[key_code]);
   }
 

@@ -5,6 +5,7 @@
 static PCB pcb[MAX_NR_PROC];
 static int nr_proc = 0;
 PCB *current = NULL;
+static int current_game = 0;
 
 uintptr_t loader(_Protect *as, const char *filename);
 
@@ -25,6 +26,20 @@ void load_prog(const char *filename) {
   Log("load process %d: filename = %s, entry = 0x%x, tf = %p", i, filename, entry, pcb[i].tf);
 }
 
+void switch_game(void) {
+  if (nr_proc < 3) {
+    return;
+  }
+
+  if (current_game == 0) {
+    current_game = 2;
+    Log("switch game: /bin/videotest");
+  } else {
+    current_game = 0;
+    Log("switch game: /bin/pal");
+  }
+}
+
 _RegSet* schedule(_RegSet *prev) {
   static int sched_cnt = 0;
 
@@ -38,7 +53,15 @@ _RegSet* schedule(_RegSet *prev) {
 
   int next = 0;
 
-  if (nr_proc >= 2) {
+  if (nr_proc >= 3) {
+    sched_cnt ++;
+
+    if (sched_cnt % 20 == 0) {
+      next = 1;
+    } else {
+      next = current_game;
+    }
+  } else if (nr_proc >= 2) {
     sched_cnt ++;
 
     if (sched_cnt % 20 == 0) {
@@ -46,7 +69,7 @@ _RegSet* schedule(_RegSet *prev) {
     } else {
       next = 0;
     }
-  } else {
+  }else {
     next = 0;
   }
 
