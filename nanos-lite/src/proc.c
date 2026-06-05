@@ -26,6 +26,8 @@ void load_prog(const char *filename) {
 }
 
 _RegSet* schedule(_RegSet *prev) {
+  static int sched_cnt = 0;
+
   if (current != NULL && prev != NULL) {
     current->tf = prev;
   }
@@ -35,10 +37,23 @@ _RegSet* schedule(_RegSet *prev) {
   }
 
   int next = 0;
-  if (current != NULL) {
-    int cur = current - pcb;
-    next = (cur + 1) % nr_proc;
+
+  if (nr_proc >= 2) {
+    sched_cnt ++;
+
+    if (sched_cnt % 20 == 0) {
+      next = 1;
+    } else {
+      next = 0;
+    }
+  } else {
+    next = 0;
   }
+
+  //if (current != NULL) {
+    //int cur = current - pcb;
+    //next = (cur + 1) % nr_proc;
+  //}
 
   current = &pcb[next];
   _switch(&current->as);
