@@ -83,7 +83,7 @@ int main() {
   init_fs();
 
 #ifdef HAS_PTE
-  load_prog("/bin/dummy");
+  load_prog("/bin/pal");
   //load_prog("/bin/hello");
   run_first_proc();
 #else
