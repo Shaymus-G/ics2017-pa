@@ -2,17 +2,10 @@
 
 extern _RegSet* do_syscall(_RegSet *r);
 extern _RegSet* schedule(_RegSet *prev);
-//extern bool consume_game_switch_pending(void);
 
 static _RegSet* do_event(_Event e, _RegSet* r) {
   switch (e.event) {
     case _EVENT_SYSCALL:
-      //do_syscall(r);
-      //if (consume_game_switch_pending()) {
-        //return schedule(r);
-      //}
-      //return NULL;
-
       return do_syscall(r);
 
     case _EVENT_IRQ_TIME:

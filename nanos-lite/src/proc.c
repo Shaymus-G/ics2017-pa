@@ -6,11 +6,9 @@ static PCB pcb[MAX_NR_PROC];
 static int nr_proc = 0;
 PCB *current = NULL;
 static int current_game = 0;
-//static bool game_switch_pending = false;
 static bool force_game_schedule = false;
 
 uintptr_t loader(_Protect *as, const char *filename);
-//extern uintptr_t loader_brk;
 
 void load_prog(const char *filename) {
   int i = nr_proc ++;
@@ -48,23 +46,8 @@ void switch_game(void) {
   force_game_schedule = true;
 }
 
-//bool consume_game_switch_pending(void) {
-  //if (game_switch_pending) {
-    //game_switch_pending = false;
-    //force_game_schedule = true;
-    //return true;
-  //}
-
-  //return false;
-//}
-
 _RegSet* schedule(_RegSet *prev) {
   static int sched_cnt = 0;
-
-  int old = -1;
-  if (current != NULL) {
-    old = current - pcb;
-  }
 
   if (current != NULL && prev != NULL) {
     current->tf = prev;
@@ -99,14 +82,9 @@ _RegSet* schedule(_RegSet *prev) {
     next = 0;
   }
 
-  //if (current != NULL) {
-    //int cur = current - pcb;
-    //next = (cur + 1) % nr_proc;
-  //}
-
   current = &pcb[next];
 
-  Log("schedule: old = %d, next = %d, current_game = %d, prev = %p, prev_eip = 0x%x, prev_esp = 0x%x, next_tf = %p, next_eip = 0x%x, next_esp = 0x%x, next_as = %p", old, next, current_game, prev, prev ? prev->eip : 0, prev ? prev->esp : 0, current->tf, current->tf ? current->tf->eip : 0, current->tf ? current->tf->esp : 0, current->as.ptr);
+  //Log("schedule: old = %d, next = %d, current_game = %d, prev = %p, prev_eip = 0x%x, prev_esp = 0x%x, next_tf = %p, next_eip = 0x%x, next_esp = 0x%x, next_as = %p", old, next, current_game, prev, prev ? prev->eip : 0, prev ? prev->esp : 0, current->tf, current->tf ? current->tf->eip : 0, current->tf ? current->tf->esp : 0, current->as.ptr);
 
   _switch(&current->as);
 

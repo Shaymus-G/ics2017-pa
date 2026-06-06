@@ -93,13 +93,5 @@ int main() {
   enter_user(entry, filename);
 #endif
 
-//#ifdef HAS_PTE
-  //load_prog(filename);
-  //run_first_proc();
-//#else
-  //uint32_t entry = loader(NULL, filename);
-  //enter_user(entry, filename);
-//#endif
-
   panic("Should not reach here");
 }
