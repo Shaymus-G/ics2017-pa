@@ -1,6 +1,7 @@
 #include "proc.h"
 
 #define MAX_NR_PROC 4
+#define HELLO_SCHED_INTERVAL 200
 
 static PCB pcb[MAX_NR_PROC];
 static int nr_proc = 0;
@@ -65,7 +66,7 @@ _RegSet* schedule(_RegSet *prev) {
   } else if (nr_proc >= 3) {
     sched_cnt ++;
 
-    if (sched_cnt % 20 == 0) {
+    if (sched_cnt % HELLO_SCHED_INTERVAL == 0) {
       next = 1;
     } else {
       next = current_game;
