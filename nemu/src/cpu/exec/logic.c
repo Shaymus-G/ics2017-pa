@@ -99,6 +99,36 @@ make_EHelper(shr) {
   print_asm_template2(shr);
 }
 
+make_EHelper(shld) {
+  assert(id_dest->width == 2 || id_dest->width == 4);
+
+  uint32_t width_bits = id_dest->width * 8;
+  uint32_t count = id_src->val & 0x1f;
+
+  uint32_t mask;
+  if (id_dest->width == 2) {
+    mask = 0xffff;
+  } else {
+    mask = 0xffffffffu;
+  }
+
+  uint32_t dest = id_dest->val & mask;
+  uint32_t src = id_src2->val & mask;
+
+  if (count != 0) {
+    if (count < width_bits) {
+      t2 = ((dest << count) | (src >> (width_bits - count))) & mask;
+      operand_write(id_dest, &t2);
+      rtl_update_ZFSF(&t2, id_dest->width);
+
+      cpu.CF = (dest >> (width_bits - count)) & 0x1;
+    } else {
+    }
+  }
+
+  print_asm("shld %s,%s,%s", id_src->str, id_src2->str, id_dest->str);
+}
+
 make_EHelper(shrd) {
   assert(id_dest->width == 2 || id_dest->width == 4);
 
