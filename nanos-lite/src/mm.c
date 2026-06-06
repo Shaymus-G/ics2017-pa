@@ -28,14 +28,14 @@ int mm_brk(uint32_t new_brk) {
     return -1;
   }
 
-  if (new_brk > current->mex_brk) {
+  if (new_brk > current->max_brk) {
     uintptr_t va = PGROUNDUP(current->max_brk);
     uintptr_t end = PGROUNDUP(new_brk);
 
     for (; va < end; va += PGSIZE) {
       void *pa = new_page();
       memset(pa, 0, PGSIZE);
-      map(&current->as, (void *)va, pa);
+      _map(&current->as, (void *)va, pa);
     }
 
     current->max_brk = end;

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "memory.h"
 #include <unistd.h>
 
 #define DEFAULT_ENTRY ((void *)0x8048000)
