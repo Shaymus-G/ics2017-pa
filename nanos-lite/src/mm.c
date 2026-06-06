@@ -16,6 +16,12 @@ void free_page(void *p) {
 
 /* The brk() system call handler. */
 int mm_brk(uint32_t new_brk) {
+  Log("mm_brk: new_brk = 0x%x, cur  = 0x%x, max = 0x%x, area = [%p, %p)", new_brk, 
+      current ? current->cur_brk : 0,
+      current ? current->max_brk : 0,
+      current ? current->as.area.start : 0,
+      current ? current->as.area.end : 0);
+
   if (current == NULL) {
     return -1;
   }

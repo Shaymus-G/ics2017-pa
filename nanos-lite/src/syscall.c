@@ -47,7 +47,7 @@ _RegSet* do_syscall(_RegSet *r) {
 
     case SYS_brk: {
       uintptr_t new_brk = a[1];
-
+      Log("SYS_brk: new_brk = 0x%x", new_brk);
       //if (new_brk >= 0x04000000 && new_brk < 0x08000000) {
         //r->eax = 0;
       //} else {
@@ -55,6 +55,7 @@ _RegSet* do_syscall(_RegSet *r) {
       //}
 
       r->eax = mm_brk(new_brk);
+      Log("SYS_brk ret = %d", r->eax);
       break;
 		  }
 
