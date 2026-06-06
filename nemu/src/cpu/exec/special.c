@@ -15,6 +15,7 @@ make_EHelper(inv) {
   temp[1] = instr_fetch(eip, 4);
 
   uint8_t *p = (void *)temp;
+  //printf("invalid opcode context: eip = 0x%08x, esp = 0x%08x, cr3 = 0x%08x, eflags = 0x%08x\n", cpu.eip, cpu.esp, cpu.cr3, cpu.eflags);
   printf("invalid opcode(eip = 0x%08x): %02x %02x %02x %02x %02x %02x %02x %02x ...\n\n",
       ori_eip, p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7]);
 

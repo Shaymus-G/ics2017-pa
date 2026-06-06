@@ -6,6 +6,7 @@ extern size_t fs_read(int fd, void *buf, size_t len);
 extern size_t fs_write(int fd, const void *buf, size_t len);
 extern size_t fs_lseek(int fd, size_t offset, int whence);
 extern int fs_close(int fd);
+extern int mm_brk(uint32_t new_brk);
 
 _RegSet* do_syscall(_RegSet *r) {
   uintptr_t a[4];
@@ -46,15 +47,7 @@ _RegSet* do_syscall(_RegSet *r) {
 
     case SYS_brk: {
       uintptr_t new_brk = a[1];
-      //Log("SYS_brk: new_brk = 0x%x", new_brk);
-
-      if (new_brk >= 0x04000000 && new_brk < 0x08000000) {
-        r->eax = 0;
-      } else {
-	//Log("SYS_brk failed: new_brk = 0x%x", new_brk);
-	r->eax = -1;
-      }
-
+      r->eax = mm_brk(new_brk);
       break;
 		  }
 

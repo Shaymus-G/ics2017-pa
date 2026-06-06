@@ -54,8 +54,15 @@ void _protect(_Protect *p) {
     updir[i] = kpdirs[i];
   }
 
-  p->area.start = (void*)0x8000000;
+  p->area.start = (void*)0x4000000;
   p->area.end = (void*)0xc0000000;
+
+  uint32_t start = PDX(p->area.start);
+  uint32_t end = PDX(p->area.end);
+
+  for (uint32_t i = start; i < end; i ++) {
+    updir[i] = 0;
+  }
 }
 
 void _release(_Protect *p) {
@@ -66,11 +73,52 @@ void _switch(_Protect *p) {
 }
 
 void _map(_Protect *p, void *va, void *pa) {
+  PDE *pdir = (PDE *)p->ptr;
+  uint32_t pdir_idx = PDX(va);
+  uint32_t ptab_idx = PTX(va);
+
+  PTE *ptab;
+
+  if ((pdir[pdir_idx] & PTE_P) == 0) {
+    ptab = (PTE *)palloc_f();
+    
+    for (int i = 0; i < NR_PTE; i ++) {
+      ptab[i] = 0;
+    }
+
+    pdir[pdir_idx] = ((uintptr_t)ptab & ~0xfff) | PTE_P | PTE_W | PTE_U;
+  } else {
+    ptab = (PTE *)PTE_ADDR(pdir[pdir_idx]);
+  }
+
+  ptab[ptab_idx] = ((uintptr_t)pa & ~0xfff) | PTE_P | PTE_W | PTE_U;
 }
 
 void _unmap(_Protect *p, void *va) {
 }
 
 _RegSet *_umake(_Protect *p, _Area ustack, _Area kstack, void *entry, char *const argv[], char *const envp[]) {
-  return NULL;
+  (void)p;
+  (void)argv;
+  (void)envp;
+
+  _RegSet *tf = (_RegSet *)((uintptr_t)kstack.end - sizeof(_RegSet));
+
+  tf->edi = 0;
+  tf->esi = 0;
+  tf->ebp = 0;
+  tf->esp = (uintptr_t)ustack.end;
+  tf->ebx = 0;
+  tf->edx = 0;
+  tf->ecx = 0;
+  tf->eax = 0;
+
+  tf->irq = 0x80;
+  tf->error_code = 0;
+
+  tf->eip = (uintptr_t)entry;
+  tf->cs = KSEL(SEG_KCODE);
+  tf->eflags = 0x2 | FL_IF;
+
+  return tf;
 }
