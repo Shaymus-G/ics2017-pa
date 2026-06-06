@@ -11,7 +11,7 @@ extern size_t fs_filesz(int fd);
 extern int fs_close(int fd);
 void* new_page(void);
 
-uintptr_t loader_brk = 0;
+//uintptr_t loader_brk = 0;
 
 uintptr_t loader(_Protect *as, const char *filename) {
   if (filename == NULL) {
@@ -21,7 +21,7 @@ uintptr_t loader(_Protect *as, const char *filename) {
   int fd = fs_open(filename, 0, 0);
   size_t size = fs_filesz(fd);
 
-  loader_brk = PGROUNDUP((uintptr_t)DEFAULT_ENTRY + size);
+  //loader_brk = PGROUNDUP((uintptr_t)DEFAULT_ENTRY + size);
 
   if (as == NULL) {
     fs_read(fd, DEFAULT_ENTRY, size);

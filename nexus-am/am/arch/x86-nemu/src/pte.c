@@ -54,8 +54,15 @@ void _protect(_Protect *p) {
     updir[i] = kpdirs[i];
   }
 
-  p->area.start = (void*)0x8000000;
+  p->area.start = (void*)0x4000000;
   p->area.end = (void*)0xc0000000;
+
+  uint32_t start = PDX(p->area.start);
+  uint32_t end = PDX(p->area.end);
+
+  for (uint32_t i = start; i < end; i ++) {
+    updir[i] = 0;
+  }
 }
 
 void _release(_Protect *p) {
